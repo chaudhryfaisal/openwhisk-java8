@@ -22,8 +22,9 @@ public class UndertowUtil {
 
     public static Payload payload(HttpServerExchange exchange, AttachmentKey<Object> requestBody) {
         Payload.PayloadBuilder b = Payload.builder();
-        exchange.getResponseHeaders().forEach(h -> b.header(h.getHeaderName().toString(), h.getFirst()));
+        exchange.getRequestHeaders().forEach(h -> b.header(h.getHeaderName().toString(), h.getFirst()));
         return b
+                .method(exchange.getRequestMethod().toString())
                 .path(exchange.getRequestPath())
                 .query(exchange.getQueryString())
                 .body(exchange.getAttachment(requestBody))
